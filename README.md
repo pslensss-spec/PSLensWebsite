@@ -15,10 +15,11 @@ Mobile-style web app for booking PSLens studio shoot slots.
 npm install
 cp .env.example .env
 # fill VITE_SUPABASE_* and function secrets
-npm run dev
+npm run dev          # UI on http://localhost:5173
+npm run dev:netlify  # UI + Netlify Functions (API) on :8888
 ```
 
-With the Netlify Vite plugin, `/api/*` functions run during `npm run dev`.
+Use `npm run dev:netlify` when testing bookings/contact (Discord, Resend, geo).
 
 ## Environment
 
