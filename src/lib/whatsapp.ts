@@ -1,6 +1,9 @@
 /** Digits only, country code included — e.g. 15551234567 */
+const DEFAULT_NUMBER = '18143912442' // +1 814-391-2442
+
 const raw =
-  (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined)?.replace(/\D/g, '') || ''
+  (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined)?.replace(/\D/g, '') ||
+  DEFAULT_NUMBER
 
 export const whatsappNumber = raw
 export const whatsappConfigured = raw.length >= 8
