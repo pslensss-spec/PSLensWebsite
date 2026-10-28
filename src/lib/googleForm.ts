@@ -1,5 +1,9 @@
 /** Public Google Form “viewform” URL from Form → Send → Link */
-export const googleFormUrl = (import.meta.env.VITE_GOOGLE_FORM_URL as string | undefined)?.trim()
+const DEFAULT_FORM =
+  'https://docs.google.com/forms/d/e/1FAIpQLSckmY8Dh33rsvzMX1QpYfbBvj0uxywYyyRnjnq9Jlk21Nl3OA/viewform'
+
+export const googleFormUrl =
+  (import.meta.env.VITE_GOOGLE_FORM_URL as string | undefined)?.trim() || DEFAULT_FORM
 
 export const googleFormConfigured = Boolean(googleFormUrl)
 
