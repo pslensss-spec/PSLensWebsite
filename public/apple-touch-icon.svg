@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="PSLens">
+  <rect width="180" height="180" rx="40" fill="#111111"/>
+  <text
+    x="90"
+    y="118"
+    text-anchor="middle"
+    font-family="Arial Black, Helvetica Neue, Helvetica, Arial, sans-serif"
+    font-size="78"
+    font-weight="800"
+    letter-spacing="-4"
+    fill="#F5F2EA"
+  >PS</text>
+  <circle cx="142" cy="38" r="14" fill="#EF4444"/>
+</svg>

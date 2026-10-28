@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { BottomNav } from './BottomNav'
+import { WhatsAppButton } from './WhatsAppButton'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 
@@ -89,6 +90,7 @@ export function MobileShell() {
         <div className="app-scroll">
           <Outlet />
         </div>
+        <WhatsAppButton variant="fab" />
         <BottomNav bookingCount={bookingCount} />
       </div>
     </div>

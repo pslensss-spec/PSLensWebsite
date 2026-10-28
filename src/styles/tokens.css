@@ -573,3 +573,34 @@ a {
     transform: translateY(0);
   }
 }
+
+.whatsapp-btn {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  text-decoration: none;
+}
+
+.whatsapp-btn:hover {
+  background: #1ebe57;
+}
+
+.whatsapp-fab {
+  position: absolute;
+  right: 18px;
+  bottom: calc(var(--nav-height) + 10px);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
+  z-index: 5;
+  transition: transform 0.15s ease;
+}
+
+.whatsapp-fab:active {
+  transform: scale(0.96);
+}

@@ -1,4 +1,5 @@
 import { ProfileAvatar } from '../components/ProfileAvatar'
+import { WhatsAppButton } from '../components/WhatsAppButton'
 import { googleFormConfigured, googleFormEmbedUrl, googleFormUrl } from '../lib/googleForm'
 
 export function ContactPage() {
@@ -16,9 +17,11 @@ export function ContactPage() {
 
       <section className="card fade-in" style={{ marginBottom: 14 }}>
         <p className="small muted" style={{ margin: 0 }}>
-          Share your details and we’ll get back to you about Studio 04 reel shoots.
+          Message us on WhatsApp or share details in the form below for Studio 04 reel shoots.
         </p>
       </section>
+
+      <WhatsAppButton />
 
       {embed ? (
         <div className="fade-in" style={{ borderRadius: 20, overflow: 'hidden', background: '#fff' }}>
