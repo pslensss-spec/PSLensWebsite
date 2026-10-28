@@ -1,40 +1,8 @@
-import { useEffect, useState, type FormEvent } from 'react'
 import { ProfileAvatar } from '../components/ProfileAvatar'
-import { useAuth } from '../hooks/useAuth'
-import { sendContact } from '../lib/api'
+import { googleFormConfigured, googleFormEmbedUrl, googleFormUrl } from '../lib/googleForm'
 
 export function ContactPage() {
-  const { user, profile } = useAuth()
-  const [name, setName] = useState(profile?.display_name ?? '')
-  const [email, setEmail] = useState(user?.email ?? '')
-
-  useEffect(() => {
-    if (profile?.display_name) setName(profile.display_name)
-    if (user?.email) setEmail(user.email)
-  }, [profile?.display_name, user?.email])
-  const [message, setMessage] = useState('')
-  const [busy, setBusy] = useState(false)
-  const [feedback, setFeedback] = useState<{ type: 'ok' | 'error'; text: string } | null>(
-    null,
-  )
-
-  async function onSubmit(e: FormEvent) {
-    e.preventDefault()
-    setFeedback(null)
-    setBusy(true)
-    try {
-      await sendContact({ name, email, message })
-      setFeedback({ type: 'ok', text: 'Message sent. We’ll get back to you soon.' })
-      setMessage('')
-    } catch (err) {
-      setFeedback({
-        type: 'error',
-        text: err instanceof Error ? err.message : 'Could not send message',
-      })
-    } finally {
-      setBusy(false)
-    }
-  }
+  const embed = googleFormEmbedUrl()
 
   return (
     <div>
@@ -46,51 +14,52 @@ export function ContactPage() {
         <ProfileAvatar />
       </div>
 
-      <section className="card fade-in" style={{ marginBottom: 18 }}>
+      <section className="card fade-in" style={{ marginBottom: 14 }}>
         <p className="small muted" style={{ margin: 0 }}>
-          Questions about Studio 04 reel shoots, availability, or custom packages? Send a note —
-          we notify the studio by email and Discord.
+          Share your details and we’ll get back to you about Studio 04 reel shoots.
         </p>
       </section>
 
-      <form className="fade-in" onSubmit={(e) => void onSubmit(e)}>
-        <div className="field">
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="Your name"
-          />
+      {embed ? (
+        <div className="fade-in" style={{ borderRadius: 20, overflow: 'hidden', background: '#fff' }}>
+          <iframe
+            title="PSLens contact form"
+            src={embed}
+            width="100%"
+            height="720"
+            frameBorder={0}
+            marginHeight={0}
+            marginWidth={0}
+            style={{ display: 'block', border: 'none', minHeight: 640 }}
+          >
+            Loading…
+          </iframe>
+          {googleFormUrl ? (
+            <p className="small muted" style={{ padding: '10px 12px', margin: 0 }}>
+              Form not loading?{' '}
+              <a href={googleFormUrl} target="_blank" rel="noreferrer">
+                Open in a new tab
+              </a>
+            </p>
+          ) : null}
         </div>
-        <div className="field">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="you@email.com"
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="message">Message</label>
-          <textarea
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-            placeholder="Tell us what you need…"
-          />
-        </div>
-        <button type="submit" className="btn btn--primary" disabled={busy}>
-          {busy ? 'Sending…' : 'Send message →'}
-        </button>
-      </form>
-
-      {feedback ? <div className={`toast toast--${feedback.type}`}>{feedback.text}</div> : null}
+      ) : (
+        <section className="card fade-in">
+          <p style={{ marginTop: 0 }}>
+            <strong>Google Form not configured yet.</strong>
+          </p>
+          <p className="small muted">
+            Set <code>VITE_GOOGLE_FORM_URL</code> in Netlify (and local <code>.env</code>) to your
+            form link, then redeploy. Example:
+          </p>
+          <p className="small" style={{ wordBreak: 'break-all' }}>
+            https://docs.google.com/forms/d/e/…/viewform
+          </p>
+          {!googleFormConfigured ? null : (
+            <p className="small muted">The URL looks invalid — paste the “viewform” share link.</p>
+          )}
+        </section>
+      )}
     </div>
   )
 }

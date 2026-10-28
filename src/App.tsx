@@ -5,13 +5,13 @@ import { AuthPage } from './pages/AuthPage'
 import { BookingsPage } from './pages/BookingsPage'
 import { ContactPage } from './pages/ContactPage'
 import { HomePage } from './pages/HomePage'
-import { supabaseConfigured } from './lib/supabase'
+import { googleFormConfigured } from './lib/googleForm'
 import './styles/tokens.css'
 
 export default function App() {
   return (
     <AuthProvider>
-      {!supabaseConfigured ? (
+      {!googleFormConfigured ? (
         <div
           style={{
             position: 'fixed',
@@ -19,14 +19,15 @@ export default function App() {
             left: 0,
             right: 0,
             zIndex: 9999,
-            background: '#7f1d1d',
+            background: '#111',
             color: '#fff',
             padding: '10px 14px',
             fontSize: 13,
             textAlign: 'center',
           }}
         >
-          Missing Netlify env: set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, then redeploy.
+          Set Netlify env <code style={{ color: '#fbbf24' }}>VITE_GOOGLE_FORM_URL</code> to your
+          Google Form link, then redeploy.
         </div>
       ) : null}
       <BrowserRouter>

@@ -5,25 +5,28 @@ Mobile-style web app for booking PSLens studio shoot slots.
 ## Stack
 
 - Vite + React + TypeScript
-- Supabase (Auth, Postgres, RLS)
-- Netlify Functions (bookings, contact, geo)
-- Discord webhooks · Resend email · ipgeolocation.io
+- **Google Forms** for collecting customer information (Contact)
+- Netlify hosting
+- Optional: Supabase / Netlify Functions if you re-enable live bookings later
 
 ## Local setup
 
 ```bash
 npm install
 cp .env.example .env
-# fill VITE_SUPABASE_* and function secrets
-npm run dev          # UI on http://localhost:5173
-npm run dev:netlify  # UI + Netlify Functions (API) on :8888
+# set VITE_GOOGLE_FORM_URL to your form …/viewform link
+npm run dev
 ```
-
-Use `npm run dev:netlify` when testing bookings/contact (Discord, Resend, geo).
 
 ## Environment
 
-See [`.env.example`](.env.example). Browser needs only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. All other keys stay on the server (Netlify env).
+Required for Contact:
+
+```
+VITE_GOOGLE_FORM_URL=https://docs.google.com/forms/d/e/…/viewform
+```
+
+Set the same variable in **Netlify → Site configuration → Environment variables**, then **Clear cache and deploy**.
 
 ## Tabs
 
