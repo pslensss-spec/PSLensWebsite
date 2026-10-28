@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { supabase, supabaseConfigured } from '../lib/supabase'
 import type { Profile } from '../lib/types'
 
 interface AuthContextValue {
@@ -45,17 +45,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true
 
-    supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return
-      setSession(data.session)
-      if (data.session?.user) {
-        void loadProfile(data.session.user.id).finally(() => {
-          if (mounted) setLoading(false)
-        })
-      } else {
-        setLoading(false)
-      }
-    })
+    if (!supabaseConfigured) {
+      setLoading(false)
+      return
+    }
+
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (!mounted) return
+        setSession(data.session)
+        if (data.session?.user) {
+          void loadProfile(data.session.user.id).finally(() => {
+            if (mounted) setLoading(false)
+          })
+        } else {
+          setLoading(false)
+        }
+      })
+      .catch(() => {
+        if (mounted) setLoading(false)
+      })
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next)
@@ -73,6 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [loadProfile])
 
   const signInWithOtp = useCallback(async (email: string) => {
+    if (!supabaseConfigured) throw new Error('Supabase is not configured on this deploy')
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: window.location.origin },
