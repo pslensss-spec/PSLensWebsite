@@ -3,6 +3,7 @@ import { whatsappConfigured, whatsappLink } from '../lib/whatsapp'
 interface WhatsAppButtonProps {
   variant?: 'block' | 'fab'
   message?: string
+  label?: string
 }
 
 function WhatsAppIcon({ size = 22 }: { size?: number }) {
@@ -13,19 +14,16 @@ function WhatsAppIcon({ size = 22 }: { size?: number }) {
   )
 }
 
-export function WhatsAppButton({ variant = 'block', message }: WhatsAppButtonProps) {
+export function WhatsAppButton({
+  variant = 'block',
+  message,
+  label = 'Chat on WhatsApp',
+}: WhatsAppButtonProps) {
   const href = whatsappLink(message)
 
   if (!whatsappConfigured || !href) {
     if (variant === 'fab') return null
-    return (
-      <div className="card fade-in" style={{ marginBottom: 14 }}>
-        <p className="small muted" style={{ margin: 0 }}>
-          WhatsApp coming soon — set <code>VITE_WHATSAPP_NUMBER</code> (with country code) in
-          Netlify to enable chat.
-        </p>
-      </div>
-    )
+    return null
   }
 
   if (variant === 'fab') {
@@ -48,10 +46,10 @@ export function WhatsAppButton({ variant = 'block', message }: WhatsAppButtonPro
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ marginBottom: 14, width: '100%' }}
+      style={{ width: '100%' }}
     >
       <WhatsAppIcon />
-      Chat on WhatsApp
+      {label}
     </a>
   )
 }

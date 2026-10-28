@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { CalendarCard } from '../components/CalendarCard'
 import { ProfileAvatar } from '../components/ProfileAvatar'
 import { TimeSlotList } from '../components/TimeSlotList'
-import { formatDayLabel, toDateKey } from '../lib/dates'
+import { WhatsAppButton } from '../components/WhatsAppButton'
+import { formatDayLabel, formatTimeRange, toDateKey } from '../lib/dates'
 import { demoSlots, demoStudio } from '../lib/demoSlots'
 import { googleFormConfigured, googleFormUrl } from '../lib/googleForm'
+import { whatsappConfigured } from '../lib/whatsapp'
 import type { SlotStatus, TimeSlot } from '../lib/types'
 
 export function HomePage() {
@@ -46,6 +48,11 @@ export function HomePage() {
   function onSelectSlot(slot: TimeSlot) {
     setSelectedSlotId(slot.id)
   }
+
+  const selectedSlot = daySlots.find((s) => s.id === selectedSlotId)
+  const waMessage = selectedSlot
+    ? `Hi PSLens — I'd like to book ${demoStudio.code} on ${formatDayLabel(selectedDay)} · ${formatTimeRange(selectedSlot.starts_at, selectedSlot.ends_at).label}.`
+    : `Hi PSLens — I'd like to book a ${demoStudio.code} reel shoot.`
 
   return (
     <div>
@@ -91,8 +98,18 @@ export function HomePage() {
         {selectedSlotId ? 'Continue to your details →' : 'Select a time slot →'}
       </button>
 
+      <div style={{ marginTop: 12 }}>
+        {whatsappConfigured ? (
+          <WhatsAppButton message={waMessage} label="Book via WhatsApp" />
+        ) : (
+          <p className="small muted" style={{ textAlign: 'center', margin: 0 }}>
+            WhatsApp button needs <code>VITE_WHATSAPP_NUMBER</code> in Netlify / .env
+          </p>
+        )}
+      </div>
+
       <p className="small muted" style={{ marginTop: 12, textAlign: 'center' }}>
-        Next step: tell us who you are — we collect details with Google Forms.
+        Or continue to the form — we collect details with Google Forms.
       </p>
     </div>
   )
