@@ -83,6 +83,7 @@ create policy "Time slots are publicly readable"
 create or replace function public.refresh_slot_status()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 begin
   if new.booked_count >= new.capacity then
@@ -95,6 +96,11 @@ begin
   return new;
 end;
 $$;
+
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
+revoke execute on function public.refresh_slot_status() from public, anon, authenticated;
+grant execute on function public.handle_new_user() to postgres, service_role;
+grant execute on function public.refresh_slot_status() to postgres, service_role;
 
 create trigger time_slots_status_trg
   before insert or update of booked_count, capacity on public.time_slots
